@@ -1,0 +1,58 @@
+image: maven:3.9-eclipse-temurin-17
+
+stages:
+  - build
+  - test
+  - package
+  - run
+
+cache:
+  key: "${CI_COMMIT_REF_SLUG}"
+  paths:
+    - .m2/repository/
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+compile:
+  stage: build
+  script:
+    - mvn compile
+
+test:
+  stage: test
+  script:
+    - mvn test jacoco:report
+  artifacts:
+    when: always
+    reports:
+      junit: target/surefire-reports/TEST-*.xml
+    paths:
+      - target/site/jacoco/
+    expire_in: 1 week
+
+package:
+  stage: package
+  script:
+    - mvn package -DskipTests
+  artifacts:
+    paths:
+      - target/home-library-1.0-SNAPSHOT.jar
+    expire_in: 1 week
+  only:
+    - main
+
+run_demo:
+  stage: run
+  script:
+    - echo "🚀 Запускаем приложение с тестовыми данными..."
+    - java -jar target/home-library-1.0-SNAPSHOT.jar <<EOF
+1
+The Hobbit
+Tolkien
+1937
+2
+0
+EOF
+  only:
+    - main
