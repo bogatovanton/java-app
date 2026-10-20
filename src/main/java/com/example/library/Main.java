@@ -22,7 +22,7 @@ public class Main {
             System.out.println("6. Delete book");
             System.out.println("0. Exit");
             System.out.print("Choose: ");
-
+            jlkdasfjlkdsajflkjadslk
             String choice = scanner.nextLine();
             try {
                 switch (choice) {
