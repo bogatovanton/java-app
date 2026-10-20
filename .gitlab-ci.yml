@@ -46,13 +46,14 @@ run_demo:
   stage: run
   script:
     - echo "🚀 Запускаем приложение с тестовыми данными..."
-    - java -jar target/home-library-1.0-SNAPSHOT.jar <<EOF
-1
-The Hobbit
-Tolkien
-1937
-2
-0
-EOF
+    - |
+      java -jar target/home-library-1.0-SNAPSHOT.jar <<'INPUT'
+      1
+      The Hobbit
+      Tolkien
+      1937
+      2
+      0
+      INPUT
   only:
     - main
